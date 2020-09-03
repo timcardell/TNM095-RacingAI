@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cacheType: 1
-  lastUpdatedAtString: 2020-09-03T14:08:58.875+02:00
-  initializedAtString: 2020-09-03T14:08:58.875+02:00
+  lastUpdatedAtString: 2020-09-03T14:35:01.508+02:00
+  initializedAtString: 2020-09-03T14:35:01.508+02:00
   currentGitRemote:
     name: origin
     url: https://github.com/timcardell/TNM095-SettlerOfCatanAi.git
