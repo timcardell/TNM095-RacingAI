@@ -6,7 +6,7 @@ public class HexMetrics : MonoBehaviour
 {
 
 	public const float outerRadius = 10f;
-
+	public const float elevationStep = 5f;
 	public const float innerRadius = outerRadius * 0.866025404f;
 
 	public static Vector3[] corners = {
