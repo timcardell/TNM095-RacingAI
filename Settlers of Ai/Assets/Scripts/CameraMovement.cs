@@ -52,7 +52,7 @@ public class CameraMovement : MonoBehaviour
         initialPos = transform.position;
         initialRot = transform.rotation;
         zoomLimit.x = 15;
-        zoomLimit.y = 65;
+        zoomLimit.y = 120;
     }
 
 
@@ -152,7 +152,7 @@ public class CameraMovement : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 rotationActive = false;
-                if (RTSMode) transform.rotation = Quaternion.Slerp(transform.rotation, initialRot, 0.5f * Time.time);
+                if (RTSMode) transform.rotation = Quaternion.Slerp(transform.rotation, initialRot, 10f * Time.time);
             }
 
             lastMousePosition = Input.mousePosition;

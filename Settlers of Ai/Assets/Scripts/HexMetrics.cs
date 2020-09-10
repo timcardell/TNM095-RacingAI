@@ -10,7 +10,11 @@ public class HexMetrics : MonoBehaviour
 	public const float elevationStep = 5f;
 	public const float innerRadius = outerRadius * 0.866025404f;
 
-	 static Vector3[] corners = {
+	public const int chunkSizeX = 5, chunkSizeZ = 5;
+
+	public const float waterElevationOffset = -0.5f;
+
+	static Vector3[] corners = {
 		new Vector3(0f, 0f, outerRadius),
 		new Vector3(innerRadius, 0f, 0.5f * outerRadius),
 		new Vector3(innerRadius, 0f, -0.5f * outerRadius),
@@ -51,12 +55,38 @@ public class HexMetrics : MonoBehaviour
 
 	public const float horizontalTerraceStepSize = 1f / terraceSteps;
 
+	public const float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
+
 	public static Vector3 TerraceLerp(Vector3 a, Vector3 b, int step)
 	{
 		float h = step * HexMetrics.horizontalTerraceStepSize;
 		a.x += (b.x - a.x) * h;
 		a.z += (b.z - a.z) * h;
+		float v = ((step + 1) / 2) * HexMetrics.verticalTerraceStepSize;
+		a.y += (b.y - a.y) * v;
 		return a;
 	}
+
+	public static Color TerraceLerp(Color a, Color b, int step)
+	{
+		float h = step * HexMetrics.horizontalTerraceStepSize;
+		return Color.Lerp(a, b, h);
+	}
+
+	public static HexEdgeType GetEdgeType(int elevation1, int elevation2)
+	{
+		if (elevation1 == elevation2)
+		{
+			return HexEdgeType.Flat;
+		}
+		int delta = elevation2 - elevation1;
+		if (delta == 1 || delta == -1)
+		{
+			return HexEdgeType.Slope;
+		}
+		return HexEdgeType.Cliff;
+	}
+
+
 
 }

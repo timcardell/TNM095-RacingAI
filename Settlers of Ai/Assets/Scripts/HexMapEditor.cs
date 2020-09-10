@@ -12,6 +12,26 @@ public class HexMapEditor : MonoBehaviour
 	private Color activeColor;
 
 	int activeElevation;
+	bool applyColor;
+	bool applyElevation = true;
+	int brushSize;
+	int activeWaterLevel;
+	bool applyWaterLevel = true;
+
+	public void SetApplyWaterLevel(bool toggle)
+	{
+		applyWaterLevel = toggle;
+	}
+
+	public void SetWaterLevel(float level)
+	{
+		activeWaterLevel = (int)level;
+	}
+
+	public void SetBrushSize(float size)
+	{
+		brushSize = (int)size;
+	}
 
 	void Awake()
 	{
@@ -34,23 +54,61 @@ public class HexMapEditor : MonoBehaviour
 		RaycastHit hit;
 		if (Physics.Raycast(inputRay, out hit))
 		{
-			EditCell(hexGrid.GetCell(hit.point));
+			EditCells(hexGrid.GetCell(hit.point));
+		}
+	}
+
+	void EditCells(HexCell center)
+	{
+		int centerX = center.coordinates.X;
+		int centerZ = center.coordinates.Z;
+
+		for (int r = 0, z = centerZ - brushSize; z <= centerZ; z++, r++)
+		{
+			for (int x = centerX - r; x <= centerX + brushSize; x++)
+			{
+				EditCell(hexGrid.GetCell(new HexCoords(x, z)));
+			}
+		}
+		for (int r = 0, z = centerZ + brushSize; z > centerZ; z--, r++)
+		{
+			for (int x = centerX - brushSize; x <= centerX + r; x++)
+			{
+				EditCell(hexGrid.GetCell(new HexCoords(x, z)));
+			}
 		}
 	}
 
 	void EditCell(HexCell cell)
 	{
-		cell.Elevation = activeElevation;
-		cell.color = activeColor;
-		hexGrid.Refresh();
+		if (cell)
+		{
+			if (applyColor)
+			{
+				cell.Color = activeColor;
+			}
+			if (applyElevation)
+			{
+				cell.Elevation = activeElevation;
+			}
+			if (applyWaterLevel)
+			{
+				cell.WaterLevel = activeWaterLevel;
+			}
+		}
 	}
 
-	public void SelectColor(int index)
+	 void SelectColor(int index)
 	{
-		activeColor = colors[index];
+			applyColor = index >= 0;
+			if (applyColor)
+			{
+				activeColor = colors[index];
+			}
 	}
 
-	public void SetElevation(float elevation)
+
+	 void SetElevation(float elevation)
 	{
 		activeElevation = (int)elevation;
 	}
