@@ -14,6 +14,7 @@ public class HexGrid : MonoBehaviour
 	public HexGridChunk chunkPrefab;
 	public Text cellLabelPrefab;
 
+	public Texture2D noiseSource;
 
 	MeshCollider meshCollider;
 
@@ -22,7 +23,7 @@ public class HexGrid : MonoBehaviour
 
 	void Awake()
 	{
-		//HexMetrics.noiseSource = noiseSource;
+		HexMetrics.noiseSource = noiseSource;
 
 	
 		cellCountX = chunkCountX * HexMetrics.chunkSizeX;
@@ -31,6 +32,11 @@ public class HexGrid : MonoBehaviour
 		
 		CreateChunks();
 		CreateCells();
+	}
+
+	void OnEnable()
+	{
+		HexMetrics.noiseSource = noiseSource;
 	}
 
 	void CreateCells()
@@ -44,6 +50,7 @@ public class HexGrid : MonoBehaviour
 				CreateCell(x, z, i++);
 			}
 		}
+
 	}
 
 	public HexCell GetCell(HexCoords coordinates)
@@ -132,6 +139,7 @@ public class HexGrid : MonoBehaviour
 		cell.uiRect = label.rectTransform;
 
 		AddCellToChunk(x, z, cell);
+		cell.Elevation = 0;
 	}
 	void AddCellToChunk(int x, int z, HexCell cell)
 	{
