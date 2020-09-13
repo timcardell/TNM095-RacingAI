@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class HexMetrics : MonoBehaviour
 {
-	public const float solidFactor = 0.75f;
+	public const float solidFactor = 0.8f;
 	public const float blendFactor = 1f - solidFactor;
 	public const float outerRadius = 10f;
-	public const float elevationStep = 5f;
+	public const float elevationStep = 3f;
 	public const float innerRadius = outerRadius * 0.866025404f;
 	public const int chunkSizeX = 5, chunkSizeZ = 5;
-	public const float cellPerturbStrength = 5f;
+	public const float cellPerturbStrength = 4f;
 	public const float waterElevationOffset = -0.5f;
 	public static Texture2D noiseSource;
 	public const float noiseScale = 0.003f;
