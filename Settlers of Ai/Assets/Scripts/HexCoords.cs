@@ -60,8 +60,6 @@ public class HexCoords : MonoBehaviour
 		}
 
 		return new HexCoords(iX, iZ);
-
-
 	}
 
 	public override string ToString()
