@@ -9,6 +9,15 @@ public class HexCell : MonoBehaviour {
 
 	public HexGridChunk chunk;
 
+	public int value;
+
+
+	void Awake()
+    {
+		value = Random.Range(2, 12);
+    }
+
+	//-------------GEOMETRY--------------
 	public int Elevation {
 		get {
 			return elevation;
