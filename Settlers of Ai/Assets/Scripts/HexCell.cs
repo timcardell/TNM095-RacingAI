@@ -8,23 +8,6 @@ public class HexCell : MonoBehaviour {
 	public RectTransform uiRect;
 
 	public HexGridChunk chunk;
-	int terrainTypeIndex;
-
-	public int TerrainTypeIndex
-	{
-		get
-		{
-			return terrainTypeIndex;
-		}
-		set
-		{
-			if (terrainTypeIndex != value)
-			{
-				terrainTypeIndex = value;
-				Refresh();
-			}
-		}
-	}
 
 	public int Elevation {
 		get {
@@ -36,17 +19,6 @@ public class HexCell : MonoBehaviour {
 			}
 			elevation = value;
 			RefreshPosition();
-			Vector3 position = transform.localPosition;
-			position.y = value * HexMetrics.elevationStep;
-			position.y +=
-				(HexMetrics.SampleNoise(position).y * 2f - 1f) *
-				HexMetrics.elevationPerturbStrength;
-			transform.localPosition = position;
-
-			Vector3 uiPosition = uiRect.localPosition;
-			uiPosition.z = -position.y;
-			uiRect.localPosition = uiPosition;
-
 			ValidateRivers();
 
 			for (int i = 0; i < roads.Length; i++) {
@@ -57,114 +29,6 @@ public class HexCell : MonoBehaviour {
 
 			Refresh();
 		}
-	}
-
-	public void Save(BinaryWriter writer)
-	{
-		writer.Write((byte)terrainTypeIndex);
-		writer.Write((byte)elevation);
-		writer.Write((byte)waterLevel);
-		writer.Write((byte)urbanLevel);
-		writer.Write((byte)farmLevel);
-		writer.Write((byte)plantLevel);
-		writer.Write((byte)specialIndex);
-		writer.Write(walled);
-
-		//		writer.Write(hasIncomingRiver);
-		//		writer.Write((byte)incomingRiver);
-		if (hasIncomingRiver)
-		{
-			writer.Write((byte)(incomingRiver + 128));
-		}
-		else
-		{
-			writer.Write((byte)0);
-		}
-
-		//		writer.Write(hasOutgoingRiver);
-		//		writer.Write((byte)outgoingRiver);
-		if (hasOutgoingRiver)
-		{
-			writer.Write((byte)(outgoingRiver + 128));
-		}
-		else
-		{
-			writer.Write((byte)0);
-		}
-
-		int roadFlags = 0;
-		for (int i = 0; i < roads.Length; i++)
-		{
-			//			writer.Write(roads[i]);
-			if (roads[i])
-			{
-				roadFlags |= 1 << i;
-			}
-		}
-		writer.Write((byte)roadFlags);
-
-
-	}
-
-
-	public void Load(BinaryReader reader)
-	{
-		terrainTypeIndex = reader.ReadByte();
-		elevation = reader.ReadByte();
-		RefreshPosition();
-		waterLevel = reader.ReadByte();
-		urbanLevel = reader.ReadByte();
-		farmLevel = reader.ReadByte();
-		plantLevel = reader.ReadByte();
-		specialIndex = reader.ReadByte();
-		walled = reader.ReadBoolean();
-
-		//		hasIncomingRiver = reader.ReadBoolean();
-		//		incomingRiver = (HexDirection)reader.ReadByte();
-		byte riverData = reader.ReadByte();
-		if (riverData >= 128)
-		{
-			hasIncomingRiver = true;
-			incomingRiver = (HexDirection)(riverData - 128);
-		}
-		else
-		{
-			hasIncomingRiver = false;
-		}
-
-		//		hasOutgoingRiver = reader.ReadBoolean();
-		//		outgoingRiver = (HexDirection)reader.ReadByte();
-		riverData = reader.ReadByte();
-		if (riverData >= 128)
-		{
-			hasOutgoingRiver = true;
-			outgoingRiver = (HexDirection)(riverData - 128);
-		}
-		else
-		{
-			hasOutgoingRiver = false;
-		}
-
-		int roadFlags = reader.ReadByte();
-		for (int i = 0; i < roads.Length; i++)
-		{
-			roads[i] = (roadFlags & (1 << i)) != 0;
-		}
-
-	}
-
-	void RefreshPosition()
-	{
-		Vector3 position = transform.localPosition;
-		position.y = elevation * HexMetrics.elevationStep;
-		position.y +=
-			(HexMetrics.SampleNoise(position).y * 2f - 1f) *
-			HexMetrics.elevationPerturbStrength;
-		transform.localPosition = position;
-
-		Vector3 uiPosition = uiRect.localPosition;
-		uiPosition.z = -position.y;
-		uiRect.localPosition = uiPosition;
 	}
 
 	public int WaterLevel {
@@ -338,7 +202,19 @@ public class HexCell : MonoBehaviour {
 		}
 	}
 
+	public int TerrainTypeIndex {
+		get {
+			return terrainTypeIndex;
+		}
+		set {
+			if (terrainTypeIndex != value) {
+				terrainTypeIndex = value;
+				Refresh();
+			}
+		}
+	}
 
+	int terrainTypeIndex;
 
 	int elevation = int.MinValue;
 	int waterLevel;
@@ -495,6 +371,19 @@ public class HexCell : MonoBehaviour {
 		RefreshSelfOnly();
 	}
 
+	void RefreshPosition () {
+		Vector3 position = transform.localPosition;
+		position.y = elevation * HexMetrics.elevationStep;
+		position.y +=
+			(HexMetrics.SampleNoise(position).y * 2f - 1f) *
+			HexMetrics.elevationPerturbStrength;
+		transform.localPosition = position;
+
+		Vector3 uiPosition = uiRect.localPosition;
+		uiPosition.z = -position.y;
+		uiRect.localPosition = uiPosition;
+	}
+
 	void Refresh () {
 		if (chunk) {
 			chunk.Refresh();
@@ -509,5 +398,73 @@ public class HexCell : MonoBehaviour {
 
 	void RefreshSelfOnly () {
 		chunk.Refresh();
+	}
+
+	public void Save (BinaryWriter writer) {
+		writer.Write((byte)terrainTypeIndex);
+		writer.Write((byte)elevation);
+		writer.Write((byte)waterLevel);
+		writer.Write((byte)urbanLevel);
+		writer.Write((byte)farmLevel);
+		writer.Write((byte)plantLevel);
+		writer.Write((byte)specialIndex);
+		writer.Write(walled);
+
+		if (hasIncomingRiver) {
+			writer.Write((byte)(incomingRiver + 128));
+		}
+		else {
+			writer.Write((byte)0);
+		}
+
+		if (hasOutgoingRiver) {
+			writer.Write((byte)(outgoingRiver + 128));
+		}
+		else {
+			writer.Write((byte)0);
+		}
+
+		int roadFlags = 0;
+		for (int i = 0; i < roads.Length; i++) {
+			if (roads[i]) {
+				roadFlags |= 1 << i;
+			}
+		}
+		writer.Write((byte)roadFlags);
+	}
+
+	public void Load (BinaryReader reader) {
+		terrainTypeIndex = reader.ReadByte();
+		elevation = reader.ReadByte();
+		RefreshPosition();
+		waterLevel = reader.ReadByte();
+		urbanLevel = reader.ReadByte();
+		farmLevel = reader.ReadByte();
+		plantLevel = reader.ReadByte();
+		specialIndex = reader.ReadByte();
+		walled = reader.ReadBoolean();
+
+		byte riverData = reader.ReadByte();
+		if (riverData >= 128) {
+			hasIncomingRiver = true;
+			incomingRiver = (HexDirection)(riverData - 128);
+		}
+		else {
+			hasIncomingRiver = false;
+		}
+
+		riverData = reader.ReadByte();
+		if (riverData >= 128) {
+			hasOutgoingRiver = true;
+			outgoingRiver = (HexDirection)(riverData - 128);
+		}
+		else {
+			hasOutgoingRiver = false;
+		}
+
+		int roadFlags = reader.ReadByte();
+		for (int i = 0; i < roads.Length; i++) {
+			roads[i] = (roadFlags & (1 << i)) != 0;
+		}
 	}
 }

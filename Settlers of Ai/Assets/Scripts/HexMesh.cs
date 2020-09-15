@@ -26,7 +26,6 @@ public class HexMesh : MonoBehaviour {
 
 	public void Clear () {
 		hexMesh.Clear();
-
 		vertices = ListPool<Vector3>.Get();
 		if (useColors) {
 			colors = ListPool<Color>.Get();
@@ -37,8 +36,7 @@ public class HexMesh : MonoBehaviour {
 		if (useUV2Coordinates) {
 			uv2s = ListPool<Vector2>.Get();
 		}
-		if (useTerrainTypes)
-		{
+		if (useTerrainTypes) {
 			terrainTypes = ListPool<Vector3>.Get();
 		}
 		triangles = ListPool<int>.Get();
@@ -59,6 +57,10 @@ public class HexMesh : MonoBehaviour {
 			hexMesh.SetUVs(1, uv2s);
 			ListPool<Vector2>.Add(uv2s);
 		}
+		if (useTerrainTypes) {
+			hexMesh.SetUVs(2, terrainTypes);
+			ListPool<Vector3>.Add(terrainTypes);
+		}
 		hexMesh.SetTriangles(triangles, 0);
 		ListPool<int>.Add(triangles);
 		hexMesh.RecalculateNormals();
@@ -66,20 +68,7 @@ public class HexMesh : MonoBehaviour {
 			meshCollider.sharedMesh = hexMesh;
 		}
 	}
-	public void AddTriangleTerrainTypes(Vector3 types)
-	{
-		terrainTypes.Add(types);
-		terrainTypes.Add(types);
-		terrainTypes.Add(types);
-	}
 
-	public void AddQuadTerrainTypes(Vector3 types)
-	{
-		terrainTypes.Add(types);
-		terrainTypes.Add(types);
-		terrainTypes.Add(types);
-		terrainTypes.Add(types);
-	}
 	public void AddTriangle (Vector3 v1, Vector3 v2, Vector3 v3) {
 		int vertexIndex = vertices.Count;
 		vertices.Add(HexMetrics.Perturb(v1));
@@ -122,6 +111,12 @@ public class HexMesh : MonoBehaviour {
 		uv2s.Add(uv1);
 		uv2s.Add(uv2);
 		uv2s.Add(uv3);
+	}
+
+	public void AddTriangleTerrainTypes (Vector3 types) {
+		terrainTypes.Add(types);
+		terrainTypes.Add(types);
+		terrainTypes.Add(types);
 	}
 
 	public void AddQuad (Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4) {
@@ -201,5 +196,12 @@ public class HexMesh : MonoBehaviour {
 		uv2s.Add(new Vector2(uMax, vMin));
 		uv2s.Add(new Vector2(uMin, vMax));
 		uv2s.Add(new Vector2(uMax, vMax));
+	}
+
+	public void AddQuadTerrainTypes (Vector3 types) {
+		terrainTypes.Add(types);
+		terrainTypes.Add(types);
+		terrainTypes.Add(types);
+		terrainTypes.Add(types);
 	}
 }
