@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using System.IO;
 
 public class HexMapEditor : MonoBehaviour {
 
-	public Color[] colors;
+
 
 	public HexGrid hexGrid;
 
@@ -12,11 +13,11 @@ public class HexMapEditor : MonoBehaviour {
 
 	int activeUrbanLevel, activeFarmLevel, activePlantLevel, activeSpecialIndex;
 
-	Color activeColor;
+	int activeTerrainTypeIndex;
 
 	int brushSize;
 
-	bool applyColor;
+
 	bool applyElevation = true;
 	bool applyWaterLevel = true;
 
@@ -32,11 +33,9 @@ public class HexMapEditor : MonoBehaviour {
 	HexDirection dragDirection;
 	HexCell previousCell;
 
-	public void SelectColor (int index) {
-		applyColor = index >= 0;
-		if (applyColor) {
-			activeColor = colors[index];
-		}
+	public void SetTerrainTypeIndex(int index)
+	{
+		activeTerrainTypeIndex = index;
 	}
 
 	public void SetApplyElevation (bool toggle) {
@@ -108,7 +107,7 @@ public class HexMapEditor : MonoBehaviour {
 	}
 
 	void Awake () {
-		SelectColor(0);
+	
 	}
 
 	void Update () {
@@ -174,8 +173,9 @@ public class HexMapEditor : MonoBehaviour {
 
 	void EditCell (HexCell cell) {
 		if (cell) {
-			if (applyColor) {
-				cell.Color = activeColor;
+			if (activeTerrainTypeIndex >= 0)
+			{
+				cell.TerrainTypeIndex = activeTerrainTypeIndex;
 			}
 			if (applyElevation) {
 				cell.Elevation = activeElevation;
@@ -217,4 +217,32 @@ public class HexMapEditor : MonoBehaviour {
 			}
 		}
 	}
+
+	public void Save()
+	{
+		Debug.Log(Application.persistentDataPath);
+		string path = Path.Combine(Application.persistentDataPath, "Catan.map");
+		using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create)))			{
+			writer.Write(0);
+			hexGrid.Save(writer);
+		}
+	}
+
+	public void Load()
+	{
+		string path = Path.Combine(Application.persistentDataPath, "Catan.map");
+		using (BinaryReader reader = new BinaryReader(File.OpenRead(path)))
+		{
+			int header = reader.ReadInt32();
+			if (header == 0)
+			{
+				hexGrid.Load(reader);
+			}
+			else
+			{
+				Debug.LogWarning("Unknown map format " + header);
+			}
+		}
+	}
+
 }

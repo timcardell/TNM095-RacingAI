@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class HexGrid : MonoBehaviour {
 
 	public int chunkCountX = 4, chunkCountZ = 3;
 
-	public Color defaultColor = Color.white;
+	//public Color defaultColor = Color.white;
 
 	public HexCell cellPrefab;
 	public Text cellLabelPrefab;
@@ -23,6 +24,7 @@ public class HexGrid : MonoBehaviour {
 	void Awake () {
 		HexMetrics.noiseSource = noiseSource;
 		HexMetrics.InitializeHashGrid(seed);
+
 
 		cellCountX = chunkCountX * HexMetrics.chunkSizeX;
 		cellCountZ = chunkCountZ * HexMetrics.chunkSizeZ;
@@ -56,6 +58,7 @@ public class HexGrid : MonoBehaviour {
 		if (!HexMetrics.noiseSource) {
 			HexMetrics.noiseSource = noiseSource;
 			HexMetrics.InitializeHashGrid(seed);
+
 		}
 	}
 
@@ -85,6 +88,26 @@ public class HexGrid : MonoBehaviour {
 		}
 	}
 
+	public void Save(BinaryWriter writer)
+	{
+		for (int i = 0; i < cells.Length; i++)
+		{
+			cells[i].Save(writer);
+		}
+	}
+
+	public void Load(BinaryReader reader)
+	{
+		for (int i = 0; i < cells.Length; i++)
+		{
+			cells[i].Load(reader);
+		}
+		for (int i = 0; i < chunks.Length; i++)
+		{
+			chunks[i].Refresh();
+		}
+	}
+
 	void CreateCell (int x, int z, int i) {
 		Vector3 position;
 		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
@@ -94,7 +117,7 @@ public class HexGrid : MonoBehaviour {
 		HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
 		cell.transform.localPosition = position;
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
-		cell.Color = defaultColor;
+		
 
 		if (x > 0) {
 			cell.SetNeighbor(HexDirection.W, cells[i - 1]);
