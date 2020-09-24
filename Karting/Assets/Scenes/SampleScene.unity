@@ -417,7 +417,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2454260283973286344, guid: 37fb514bdf313f4458032f44143c8ca2, type: 3}
       propertyPath: m_Name
-      value: Go Cart (1)
+      value: Go Cart
       objectReference: {fileID: 0}
     - target: {fileID: 2454260283973286344, guid: 37fb514bdf313f4458032f44143c8ca2, type: 3}
       propertyPath: m_IsActive
