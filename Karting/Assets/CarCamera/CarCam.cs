@@ -17,7 +17,7 @@ public class CarCam : MonoBehaviour
 
     void Awake()
     {
-        carCam = Camera.main.GetComponent<Transform>();
+     //   carCam = Camera.main.GetComponent<Transform>();
         car = GetComponent<Transform>();
         carPhysics = car.GetComponent<Rigidbody>();
     }
