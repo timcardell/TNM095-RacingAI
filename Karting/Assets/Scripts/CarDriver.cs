@@ -15,39 +15,27 @@ public class CarDriver : MonoBehaviour
     {
         rB = GetComponent<Rigidbody>();
     }
+ 
     void Update()
     {
-        move();
-        turn();
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        float dt = Time.deltaTime;
+        MoveCar(horizontal, vertical, dt);
         fall();
-
     }
 
 
 
-
-    void move()
+    void MoveCar(float horizantal, float vertical, float dt)
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            rB.AddRelativeForce(new Vector3(Vector3.forward.x,0,Vector3.forward.z) * speed * 10);
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            rB.AddRelativeForce(new Vector3(Vector3.forward.x, 0, Vector3.forward.z) * -speed * 10);
-        }
-    }
+        float moveDistance = speed * vertical;
+        transform.Translate(dt * moveDistance * Vector3.forward);
 
-    void turn()
-    {
-        if (Input.GetKey(KeyCode.D))
-        {
-            rB.AddTorque(Vector3.up * turnSpeed * 8);
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            rB.AddTorque(-(Vector3.up * turnSpeed * 8));
-        }
+        float rot = turnSpeed * horizantal * 90f;
+        transform.Rotate(0, dt * rot, 0);
+
+
     }
     void fall()
     {
