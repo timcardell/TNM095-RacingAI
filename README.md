@@ -1,1 +1,0 @@
-# TNM095-SettlerOfCatanAi
