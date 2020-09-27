@@ -500,8 +500,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2973668870036120434}
   - component: {fileID: 2454260283973286346}
-  - component: {fileID: 2454260283973286340}
-  - component: {fileID: 2454260283973286341}
   m_Layer: 0
   m_Name: Go Cart
   m_TagString: Untagged
@@ -550,38 +548,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c66a707a55ec97842a606513b0d1edf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  turnSpeed: 1
-  gravityMult: 1
---- !u!54 &2454260283973286340
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2454260283973286344}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 1
-  m_AngularDrag: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 1
---- !u!65 &2454260283973286341
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2454260283973286344}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.3094149, y: 1.4148864, z: 3.3506486}
-  m_Center: {x: 0.07529259, y: 0.07755685, z: 0.46967566}
+  RB: {fileID: 0}
+  forwardAcceleration: 8
+  reverseAcceleration: 4
+  maxSpeed: 50
+  turnStrenght: 100
 --- !u!1 &2684781876985247485
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,18 +4,47 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform cameraToTarget;
-    public float sSpeed = 10.0f;
-    public Vector3 dist;
-    public Transform lookTarget;
+    public float smoothness;
+    public Transform targetObject;
+    private Vector3 initalOffset;
+    private Vector3 cameraPosition;
+
+    public enum RelativePosition { InitalPosition, Position1, Position2 }
+    public RelativePosition relativePosition;
+    public Vector3 position1;
+    public Vector3 position2;
+
+    void Start()
+    {
+        relativePosition = RelativePosition.InitalPosition;
+        initalOffset = transform.position - targetObject.position;
+    }
 
     void FixedUpdate()
     {
-        Vector3 Dpos = cameraToTarget.position + dist;
-        Vector3 sPos = Vector3.Lerp(transform.position, Dpos, sSpeed * Time.deltaTime);
-        transform.position = sPos;
-        transform.LookAt(lookTarget.position);
+        cameraPosition = targetObject.position + CameraOffset(relativePosition);
+        transform.position = Vector3.Lerp(transform.position, cameraPosition, smoothness * Time.fixedDeltaTime);
+        transform.LookAt(targetObject);
     }
 
+    Vector3 CameraOffset(RelativePosition ralativePos)
+    {
+        Vector3 currentOffset;
 
+        switch (ralativePos)
+        {
+            case RelativePosition.Position1:
+                currentOffset = position1;
+                break;
+
+            case RelativePosition.Position2:
+                currentOffset = position2;
+                break;
+
+            default:
+                currentOffset = initalOffset;
+                break;
+        }
+        return currentOffset;
+    }
 }
