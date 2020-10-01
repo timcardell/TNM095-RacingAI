@@ -1,0 +1,23 @@
+{
+    "Car Driver": {
+        "checkpoints": [
+            {
+                "steps": 0,
+                "file_path": "results\\customTrack_1\\Car Driver\\Car Driver-0.nn",
+                "reward": null,
+                "creation_time": 1601474995.84987
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 0,
+            "file_path": "results\\customTrack_1\\Car Driver.nn",
+            "reward": null,
+            "creation_time": 1601474995.84987
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.1.0",
+        "mlagents_version": "0.20.0",
+        "tensorflow_version": "2.3.1"
+    }
+}
