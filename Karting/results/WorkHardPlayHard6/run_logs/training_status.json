@@ -1,0 +1,47 @@
+{
+    "Aikartcontroller": {
+        "checkpoints": [
+            {
+                "steps": 1999982,
+                "file_path": "results\\WorkHardPlayHard6\\Aikartcontroller\\Aikartcontroller-1999982.nn",
+                "reward": 278.41715145111084,
+                "creation_time": 1601982147.8680189
+            },
+            {
+                "steps": 2499966,
+                "file_path": "results\\WorkHardPlayHard6\\Aikartcontroller\\Aikartcontroller-2499966.nn",
+                "reward": 168.6489790946245,
+                "creation_time": 1601982827.7671127
+            },
+            {
+                "steps": 2999985,
+                "file_path": "results\\WorkHardPlayHard6\\Aikartcontroller\\Aikartcontroller-2999985.nn",
+                "reward": 418.94611469904584,
+                "creation_time": 1601983502.6032805
+            },
+            {
+                "steps": 3499976,
+                "file_path": "results\\WorkHardPlayHard6\\Aikartcontroller\\Aikartcontroller-3499976.nn",
+                "reward": 7.00833703930645,
+                "creation_time": 1601984233.5434053
+            },
+            {
+                "steps": 3604066,
+                "file_path": "results\\WorkHardPlayHard6\\Aikartcontroller\\Aikartcontroller-3604066.nn",
+                "reward": 219.96484765876085,
+                "creation_time": 1601984479.7681406
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 3604066,
+            "file_path": "results\\WorkHardPlayHard6\\Aikartcontroller.nn",
+            "reward": 219.96484765876085,
+            "creation_time": 1601984479.7681406
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.1.0",
+        "mlagents_version": "0.20.0",
+        "tensorflow_version": "2.3.1"
+    }
+}

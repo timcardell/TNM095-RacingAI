@@ -1,0 +1,3 @@
+model_checkpoint_path: "aikartcontroller-500849.ckpt"
+all_model_checkpoint_paths: "aikartcontroller-499953.ckpt"
+all_model_checkpoint_paths: "aikartcontroller-500849.ckpt"

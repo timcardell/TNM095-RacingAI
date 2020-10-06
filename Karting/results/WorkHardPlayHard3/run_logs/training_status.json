@@ -1,0 +1,63 @@
+{
+    "Aikartcontroller": {
+        "checkpoints": [
+            {
+                "steps": 499977,
+                "file_path": "results\\WorkHardPlayHard3\\Aikartcontroller\\Aikartcontroller-499977.nn",
+                "reward": 11.572585366666317,
+                "creation_time": 1601974380.484376
+            },
+            {
+                "steps": 999996,
+                "file_path": "results\\WorkHardPlayHard3\\Aikartcontroller\\Aikartcontroller-999996.nn",
+                "reward": 94.7962588518858,
+                "creation_time": 1601975031.3216054
+            },
+            {
+                "steps": 1499942,
+                "file_path": "results\\WorkHardPlayHard3\\Aikartcontroller\\Aikartcontroller-1499942.nn",
+                "reward": 107.40939094219357,
+                "creation_time": 1601975687.706002
+            },
+            {
+                "steps": 1999976,
+                "file_path": "results\\WorkHardPlayHard3\\Aikartcontroller\\Aikartcontroller-1999976.nn",
+                "reward": 25.104288108469476,
+                "creation_time": 1601976333.8056252
+            },
+            {
+                "steps": 2117663,
+                "file_path": "results\\WorkHardPlayHard3\\Aikartcontroller\\Aikartcontroller-2117663.nn",
+                "reward": null,
+                "creation_time": 1601976488.6607735
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2117663,
+            "file_path": "results\\WorkHardPlayHard3\\Aikartcontroller.nn",
+            "reward": null,
+            "creation_time": 1601976488.6607735
+        }
+    },
+    "aikartcontroller": {
+        "checkpoints": [
+            {
+                "steps": 124635,
+                "file_path": "results\\WorkHardPlayHard3\\aikartcontroller\\aikartcontroller-124635.nn",
+                "reward": 12.603127926588058,
+                "creation_time": 1601976490.8633153
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 124635,
+            "file_path": "results\\WorkHardPlayHard3\\aikartcontroller.nn",
+            "reward": 12.603127926588058,
+            "creation_time": 1601976490.8633153
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.1.0",
+        "mlagents_version": "0.20.0",
+        "tensorflow_version": "2.3.1"
+    }
+}

@@ -57,7 +57,7 @@ namespace KartGame.KartSystems
             public float AddedGravity;
 
            
-
+           
             // allow for stat adding for powerups.
             public static Stats operator +(Stats a, Stats b)
             {

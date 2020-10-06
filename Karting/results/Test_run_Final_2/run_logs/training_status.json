@@ -1,0 +1,23 @@
+{
+    "Aikartcontroller": {
+        "checkpoints": [
+            {
+                "steps": 11333,
+                "file_path": "results\\Test_run_Final_2\\Aikartcontroller\\Aikartcontroller-11333.nn",
+                "reward": null,
+                "creation_time": 1601913620.0774639
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 11333,
+            "file_path": "results\\Test_run_Final_2\\Aikartcontroller.nn",
+            "reward": null,
+            "creation_time": 1601913620.0774639
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.1.0",
+        "mlagents_version": "0.20.0",
+        "tensorflow_version": "2.3.1"
+    }
+}

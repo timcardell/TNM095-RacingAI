@@ -123,19 +123,17 @@ namespace KartGame.AI
         }
 
 
-        private void FixedUpdate()
-        {
-            switch (Mode)
-            {
-                case AgentMode.Inferencing:
+        private void CheckOb()
+        { 
                     if (ShowRaycasts)
                     {
                         Debug.DrawRay(transform.position, Vector3.down * GroundCastDistance, Color.cyan);
                     }
                     // We want to place the agent back on the track if the agent happens to launch itself outside of the track.
                     if (Physics.Raycast(transform.position, Vector3.down, out var hit, GroundCastDistance, TrackMask)
-                        && ((1 << hit.collider.gameObject.layer) & OutOfBoundsMask) > 0)
+                        && ((1 << hit.collider.gameObject.layer) & OutOfBoundsMask) > 0 )
                     {
+                        Debug.Log("Respawning");
                         // Reset the agent back to its last known agent checkpoint
                         Transform checkpoint = Colliders[checkpointIndex].transform;
                         transform.localRotation = checkpoint.rotation;
@@ -143,8 +141,7 @@ namespace KartGame.AI
                         kart.Rigidbody.velocity = default;
                         acceleration = steering = 0f;
                     }
-                    break;
-            }
+    
         }
 
         void OnTriggerEnter(Collider other)
@@ -197,15 +194,13 @@ namespace KartGame.AI
         public override void CollectObservations(VectorSensor sensor)
         {
             sensor.AddObservation(kart.LocalSpeed());
-
+            CheckOb();
             // Add an observation for direction of the agent to the next checkpoint.
             var next = (checkpointIndex + 1) % Colliders.Length;
-            Debug.Log(next);
             var nextCollider = Colliders[next];
-            Debug.Log(nextCollider);
             var direction = (nextCollider.transform.position - kart.transform.position).normalized;
            
-            Debug.Log(direction);
+          
             sensor.AddObservation(Vector3.Dot(kart.Rigidbody.velocity.normalized, direction));
 
 
@@ -246,10 +241,9 @@ namespace KartGame.AI
             InterpretDiscreteActions(vectorAction);
 
             // Find the next checkpoint when registering the current checkpoint that the agent has passed.
-            int next = (checkpointIndex + 1) % Colliders.Length;
+            int next = (checkpointIndex + 1) ;
             Collider nextCollider = Colliders[next];
             Vector3 direction = (nextCollider.transform.position - kart.transform.position).normalized;
-          
             float reward = Vector3.Dot(kart.Rigidbody.velocity.normalized, direction);
 
             Debug.DrawRay(AgentSensorTransform.position, kart.Rigidbody.velocity, Color.blue);
@@ -265,10 +259,10 @@ namespace KartGame.AI
             switch (Mode)
             {
                 case AgentMode.Training:
-                    checkpointIndex = Random.Range(0, Colliders.Length - 1);
+                    //checkpointIndex = Random.Range(0, Colliders.Length - 1);
                     Collider collider = Colliders[checkpointIndex];
                     transform.localRotation = collider.transform.rotation;
-                    transform.position = new Vector3(collider.transform.position.x,0.8f,collider.transform.position.z);
+                    transform.position = collider.transform.position;
                     kart.Rigidbody.velocity = default;
                     acceleration = 0f;
                     steering = 0f;
