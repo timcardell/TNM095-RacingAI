@@ -255,7 +255,7 @@ namespace KartGame.AI
 
         void SetLapText()
         {
-            txt.GetComponent<UnityEngine.UI.Text>().text = "lap:" + lap.ToString();
+            txt.text = "lap:" + lap.ToString();
         }
 
         public override void OnActionReceived(float[] vectorAction)
@@ -296,7 +296,7 @@ namespace KartGame.AI
 
         public override void Heuristic(float[] localActions)
         {
-            localActions[0] = Input.GetAxis("Horizontal") ;
+            localActions[0] = Input.GetAxis("Horizontal") +1 ;
             localActions[1] = Sign(Input.GetAxis("Vertical"));
            
         }

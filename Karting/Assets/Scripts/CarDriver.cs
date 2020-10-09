@@ -250,7 +250,7 @@ namespace KartGame.KartSystems
         void SetCountText()
         {
             float speed = Rigidbody.velocity.magnitude * 3.6f;
-            txt.GetComponent<UnityEngine.UI.Text>().text =  speed.ToString()  + " Km/h " ;
+            txt.GetComponent<UnityEngine.UI.Text>().text =  speed.ToString("0")  + " Km/h " ;
         }
 
 
