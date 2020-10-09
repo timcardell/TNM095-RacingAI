@@ -115,7 +115,7 @@ namespace KartGame.KartSystems
                 steeringAnimationDamping * Time.deltaTime);
         }
 
-        void LateUpdate()
+        void Update()
         {
             RotateWheels();
         }

@@ -1,0 +1,41 @@
+{
+    "Aikartcontroller": {
+        "checkpoints": [
+            {
+                "steps": 499957,
+                "file_path": "results\\school5\\Aikartcontroller\\Aikartcontroller-499957.nn",
+                "reward": 240.17807585000992,
+                "creation_time": 1602076478.9441257
+            },
+            {
+                "steps": 999974,
+                "file_path": "results\\school5\\Aikartcontroller\\Aikartcontroller-999974.nn",
+                "reward": 54.641832537949085,
+                "creation_time": 1602077201.7480843
+            },
+            {
+                "steps": 1499960,
+                "file_path": "results\\school5\\Aikartcontroller\\Aikartcontroller-1499960.nn",
+                "reward": 244.592080488801,
+                "creation_time": 1602077903.7682393
+            },
+            {
+                "steps": 1754759,
+                "file_path": "results\\school5\\Aikartcontroller\\Aikartcontroller-1754759.nn",
+                "reward": null,
+                "creation_time": 1602078260.1426322
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1754759,
+            "file_path": "results\\school5\\Aikartcontroller.nn",
+            "reward": null,
+            "creation_time": 1602078260.1426322
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.1.0",
+        "mlagents_version": "0.20.0",
+        "tensorflow_version": "2.3.1"
+    }
+}

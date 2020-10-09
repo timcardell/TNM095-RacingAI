@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace KartGame.KartSystems
 {
@@ -126,7 +127,7 @@ namespace KartGame.KartSystems
         List<StatPowerup> activePowerupList = new List<StatPowerup>();
         GameObject lastGroundCollided = null;
         CarDriver.Stats finalStats;
-
+        public Text txt;
         void Awake()
         {
             Rigidbody = GetComponent<Rigidbody>();
@@ -136,6 +137,7 @@ namespace KartGame.KartSystems
 
         void FixedUpdate()
         {
+             SetCountText ();
             ResetIfStuck();
 
             GatherInputs();
@@ -243,6 +245,12 @@ namespace KartGame.KartSystems
                     transform.position += diff * transform.up;
                 }
             }
+        }
+
+        void SetCountText()
+        {
+            float speed = Rigidbody.velocity.x * 3.6f;
+            txt.GetComponent<UnityEngine.UI.Text>().text =  speed.ToString()  + " Km/h " ;
         }
 
         void GroundAirbourne()

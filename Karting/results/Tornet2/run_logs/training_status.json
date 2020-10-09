@@ -1,0 +1,47 @@
+{
+    "Aikartcontroller": {
+        "checkpoints": [
+            {
+                "steps": 2999964,
+                "file_path": "results\\Tornet2\\Aikartcontroller\\Aikartcontroller-2999964.nn",
+                "reward": 251.11128017306328,
+                "creation_time": 1602147857.5154388
+            },
+            {
+                "steps": 3499977,
+                "file_path": "results\\Tornet2\\Aikartcontroller\\Aikartcontroller-3499977.nn",
+                "reward": 253.7672161757946,
+                "creation_time": 1602148781.4260929
+            },
+            {
+                "steps": 3999982,
+                "file_path": "results\\Tornet2\\Aikartcontroller\\Aikartcontroller-3999982.nn",
+                "reward": 254.71039587259293,
+                "creation_time": 1602149720.598305
+            },
+            {
+                "steps": 4499961,
+                "file_path": "results\\Tornet2\\Aikartcontroller\\Aikartcontroller-4499961.nn",
+                "reward": 148.2015926167369,
+                "creation_time": 1602150741.3516223
+            },
+            {
+                "steps": 4669936,
+                "file_path": "results\\Tornet2\\Aikartcontroller\\Aikartcontroller-4669936.nn",
+                "reward": null,
+                "creation_time": 1602151101.8506544
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 4669936,
+            "file_path": "results\\Tornet2\\Aikartcontroller.nn",
+            "reward": null,
+            "creation_time": 1602151101.8506544
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.1.0",
+        "mlagents_version": "0.20.0",
+        "tensorflow_version": "2.3.1"
+    }
+}

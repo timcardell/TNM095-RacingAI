@@ -1,0 +1,23 @@
+{
+    "Aikartcontroller": {
+        "checkpoints": [
+            {
+                "steps": 15314,
+                "file_path": "results\\Tornet1\\Aikartcontroller\\Aikartcontroller-15314.nn",
+                "reward": -3.5341462559170194,
+                "creation_time": 1602140758.676945
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 15314,
+            "file_path": "results\\Tornet1\\Aikartcontroller.nn",
+            "reward": -3.5341462559170194,
+            "creation_time": 1602140758.676945
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.1.0",
+        "mlagents_version": "0.20.0",
+        "tensorflow_version": "2.3.1"
+    }
+}
