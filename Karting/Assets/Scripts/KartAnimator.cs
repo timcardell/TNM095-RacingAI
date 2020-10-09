@@ -31,6 +31,9 @@ namespace KartGame.KartSystems
             /// </summary>
             public void Setup()
             {
+                axelAxis = new Vector3(1, 0, 0);
+
+                steeringAxis = new Vector3(0, 1, 0);
                 m_NormalizedAxelAxis = axelAxis.normalized;
                 m_NormalizedSteeringAxis = steeringAxis.normalized;
                 m_SteerlessLocalRotation = wheelTransform.localRotation;
@@ -43,6 +46,8 @@ namespace KartGame.KartSystems
             {
                 m_SteerlessLocalRotation = wheelTransform.localRotation;
             }
+
+           
 
             /// <summary>
             /// Some rotations are made relative to a default rotation.  This restores that default rotation.
@@ -104,7 +109,10 @@ namespace KartGame.KartSystems
 
         void Start()
         {
-            frontLeftWheel.Setup();
+
+
+
+        frontLeftWheel.Setup();
             frontRightWheel.Setup();
             rearLeftWheel.Setup();
             rearRightWheel.Setup();
