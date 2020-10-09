@@ -2,6 +2,7 @@
 using Unity.MLAgents.Sensors;
 using KartGame.KartSystems;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace KartGame.AI
 {
@@ -59,6 +60,7 @@ namespace KartGame.AI
         public Collider[] Colliders;
         [Tooltip("What layer are the checkpoints on? This should be an exclusive layer for the agent to use.")]
         public LayerMask CheckpointMask;
+        public LayerMask GoalMask;
 
         [Space]
         [Tooltip("Would the agent need a custom transform to be able to raycast and hit the track? " +
@@ -99,9 +101,11 @@ namespace KartGame.AI
         float steering;
         float[] localActions;
         int checkpointIndex;
-
+        int lap;
+        public Text txt;
         void Awake()
         {
+            lap = 0;
             kart = GetComponent<CarDriver>();
             if (AgentSensorTransform == null)
             {
@@ -133,7 +137,6 @@ namespace KartGame.AI
             if (Physics.Raycast(transform.position, Vector3.down, out var hit, GroundCastDistance, TrackMask)
                       && ((1 << hit.collider.gameObject.layer) & OutOfBoundsMask) > 0)
                     {
-
                 // Reset the agent back to its last known agent checkpoint
                 Transform checkpoint = Colliders[checkpointIndex].transform;
                         transform.localRotation = checkpoint.rotation;
@@ -144,19 +147,30 @@ namespace KartGame.AI
     
         }
 
+        private bool istriggered = false;
+
         void OnTriggerEnter(Collider other)
         {
             int maskedValue = 1 << other.gameObject.layer;
             int triggered = maskedValue & CheckpointMask;
-
+            int triggered2 = maskedValue & GoalMask;
             FindCheckpointIndex(other, out int index);
 
             // Ensure that the agent touched the checkpoint and the new index is greater than the m_CheckpointIndex.
             if (triggered > 0 && index > checkpointIndex || index == 0 && checkpointIndex == Colliders.Length - 1)
             {
+                istriggered = false;
                 AddReward(PassCheckpointReward);
                 checkpointIndex = index;
             }
+            if (triggered2 > 0 && istriggered == false)
+            {
+               
+                lap++;
+                istriggered = true;
+            }
+            // do your things here that has to happen once
+            
         }
 
         void FindCheckpointIndex(Collider checkPoint, out int index)
@@ -195,6 +209,7 @@ namespace KartGame.AI
         {
             sensor.AddObservation(kart.LocalSpeed());
             CheckOb();
+            SetLapText();
             // Add an observation for direction of the agent to the next checkpoint.
             var next = (checkpointIndex + 1) % Colliders.Length;
             var nextCollider = Colliders[next];
@@ -222,9 +237,8 @@ namespace KartGame.AI
                     {
                         Debug.DrawRay(AgentSensorTransform.position, xform.forward * RaycastDistance, Color.red);
                     }
-                    Debug.DrawRay(AgentSensorTransform.position, xform.forward * RaycastDistance, Color.green);
-                    Debug.DrawRay(AgentSensorTransform.position, xform.forward * RaycastDistance * current.HitThreshold,
-                        Color.red);
+                          Debug.DrawRay(AgentSensorTransform.position, xform.forward * RaycastDistance, Color.green);
+                          Debug.DrawRay(AgentSensorTransform.position, xform.forward * RaycastDistance * current.HitThreshold, Color.red);
                 }
 
                 var hitDistance = (hit ? hitInfo.distance : RaycastDistance) / RaycastDistance;
@@ -237,6 +251,11 @@ namespace KartGame.AI
                     EndEpisode();
                 }
             }
+        }
+
+        void SetLapText()
+        {
+            txt.GetComponent<UnityEngine.UI.Text>().text = "lap:" + lap.ToString();
         }
 
         public override void OnActionReceived(float[] vectorAction)
@@ -277,7 +296,7 @@ namespace KartGame.AI
 
         public override void Heuristic(float[] localActions)
         {
-            localActions[0] = Input.GetAxis("Horizontal") + 1 ;
+            localActions[0] = Input.GetAxis("Horizontal") ;
             localActions[1] = Sign(Input.GetAxis("Vertical"));
            
         }

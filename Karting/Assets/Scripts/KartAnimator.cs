@@ -58,7 +58,9 @@ namespace KartGame.KartSystems
             /// <param name="rotationAngle">The angle in degrees by which the wheel rotates.</param>
             public void TurnWheel(float rotationAngle)
             {
+
                 wheelTransform.Rotate(m_NormalizedAxelAxis, rotationAngle, Space.Self);
+
             }
 
             /// <summary>
@@ -94,6 +96,8 @@ namespace KartGame.KartSystems
         [Tooltip("Information referring to the rear right wheel of the kart.")]
         public Wheel rearRightWheel;
 
+        public Wheel steeringWheel;
+
         float m_InverseFrontWheelRadius;
         float m_InverseRearWheelRadius;
         float m_SmoothedSteeringInput;
@@ -115,18 +119,20 @@ namespace KartGame.KartSystems
                 steeringAnimationDamping * Time.deltaTime);
         }
 
-        void Update()
+        void LateUpdate()
         {
             RotateWheels();
         }
 
         void RotateWheels()
         {
+         
             frontLeftWheel.SetToDefaultRotation();
             frontRightWheel.SetToDefaultRotation();
 
             float speed = kartController.LocalSpeed() * 10f;
             float rotationAngle = speed * Time.deltaTime * m_InverseFrontWheelRadius * Mathf.Rad2Deg;
+
             frontLeftWheel.TurnWheel(rotationAngle);
             frontRightWheel.TurnWheel(rotationAngle);
 
