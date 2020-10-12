@@ -78,6 +78,8 @@ namespace KartGame.AI
         public float TowardsCheckpointReward;
         [Tooltip("Typically if the agent moves faster, we want to reward it for finishing the track quickly.")]
         public float SpeedReward;
+        [Tooltip("Typically if the agent moves faster, we want to reward it for finishing the track quickly.")]
+        public float PlacementReward;
         #endregion
 
         #region ResetParams
@@ -113,7 +115,7 @@ namespace KartGame.AI
         void Awake()
         {
             LapGroup.alpha = 0;
-            lap = 0;
+            lap = 1;
             TimerStart();
             kart = GetComponent<CarDriver>();
             if (AgentSensorTransform == null)
@@ -160,6 +162,15 @@ namespace KartGame.AI
                 acceleration = steering = 0f;
             }
             if (Vector3.Dot(transform.up, Vector3.down) > 0)
+            {
+                Transform checkpoint = Colliders[checkpointIndex].transform;
+                transform.localRotation = checkpoint.rotation;
+                transform.position = checkpoint.position;
+                kart.Rigidbody.velocity = Vector3.zero;
+                kart.Rigidbody.angularVelocity = Vector3.zero;
+                acceleration = steering = 0f;
+            }
+            if (kart.Rigidbody.velocity.magnitude < 0.0001 && checkpointIndex > 1)
             {
                 Transform checkpoint = Colliders[checkpointIndex].transform;
                 transform.localRotation = checkpoint.rotation;
@@ -323,6 +334,7 @@ namespace KartGame.AI
          
             // Add rewards if the agent is heading in the right direction
             AddReward(reward * TowardsCheckpointReward);
+            AddReward(kart.Placement *  PlacementReward);
             AddReward(kart.LocalSpeed() * SpeedReward);
            
         }

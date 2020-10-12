@@ -127,21 +127,19 @@ namespace KartGame.KartSystems
         List<StatPowerup> activePowerupList = new List<StatPowerup>();
         GameObject lastGroundCollided = null;
         CarDriver.Stats finalStats;
-        public Text txt;
-        bool drifting = false;
-        int driftingAngle;
+        public Text txt,PlacementText;
+        public int Placement;
 
         private static int WAYPOINT_VALUE = 100;
-        private static int LAP_VALUE = 10000;
-        public int currentWaypoint;
+        private static int LAP_VALUE = 100000;
         public int currentLap;
-
+        public int currentWaypoint;
+        public Transform lastWaypoint;
 
         void Awake()
         {
             currentWaypoint = 0;
-            currentLap = 0;
-
+            Placement = 1;
             Rigidbody = GetComponent<Rigidbody>();
             m_Inputs = GetComponents<IInput>();
 
@@ -167,6 +165,19 @@ namespace KartGame.KartSystems
             // gather inputs
             float accel = Input.y;
             float turn = Input.x;
+
+            if(Placement == 1)
+            {
+                finalStats.TopSpeed = 50;
+            }
+            else if(Placement == 2)
+            {
+                finalStats.TopSpeed = 55;
+            }
+            else if(Placement == 3)
+            {
+                finalStats.TopSpeed = 60;
+            }
 
             // apply vehicle physics
             GroundVehicle(minHeight);
@@ -263,7 +274,8 @@ namespace KartGame.KartSystems
         void SetCountText()
         {
             float speed = Rigidbody.velocity.magnitude * 3.6f;
-            txt.GetComponent<UnityEngine.UI.Text>().text =  speed.ToString("0")  + " Km/h " ;
+            txt.text =  speed.ToString("0")  + " Km/h " ;
+            PlacementText.text = Placement.ToString();
         }
 
 
@@ -404,23 +416,32 @@ namespace KartGame.KartSystems
             }
         }
 
+        public void OnTriggerEnter(Collider other)
+        {
+            string otherTag = other.gameObject.tag;
+            currentWaypoint = System.Convert.ToInt32(otherTag);
+            if (other.gameObject.tag == "Finish")
+            { // completed a lap, so increase currentLap;
+                currentLap++;
+            }
+            lastWaypoint = other.transform;
+        }
+
         public int GetCarPosition(CarDriver[] allCars)
         {
             float distance = GetDistance();
-            int position = 1;
+            Placement = 1;
             foreach (CarDriver car in allCars)
             {
                 if (car.GetDistance() > distance)
-                    position++;
+                    Placement++;
             }
-            return position;
+            return Placement;
         }
-
-
 
         public float GetDistance()
         {
-            return (transform.position - lastGroundCollided.transform.position).magnitude + currentWaypoint * WAYPOINT_VALUE + currentLap * LAP_VALUE;
+            return (transform.position - lastWaypoint.position).magnitude + currentWaypoint * WAYPOINT_VALUE + currentLap *LAP_VALUE;
         }
 
         void ResetIfStuck()

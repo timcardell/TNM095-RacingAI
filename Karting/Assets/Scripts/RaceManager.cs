@@ -22,7 +22,7 @@ public class RaceManager : MonoBehaviour
     }
 
     // this gets called every frame
-    public void update()
+    public void Update()
     {
         foreach (CarDriver car in allCars)
         {
