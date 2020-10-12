@@ -130,8 +130,18 @@ namespace KartGame.KartSystems
         public Text txt;
         bool drifting = false;
         int driftingAngle;
+
+        private static int WAYPOINT_VALUE = 100;
+        private static int LAP_VALUE = 10000;
+        public int currentWaypoint;
+        public int currentLap;
+
+
         void Awake()
         {
+            currentWaypoint = 0;
+            currentLap = 0;
+
             Rigidbody = GetComponent<Rigidbody>();
             m_Inputs = GetComponents<IInput>();
 
@@ -406,10 +416,13 @@ namespace KartGame.KartSystems
             return position;
         }
 
+
+
         public float GetDistance()
         {
-            return (transform.position - lastWaypoint.position).magnitude + currentWaypoint * WAYPOINT_VALUE + currentLap * LAP_VALUE;
+            return (transform.position - lastGroundCollided.transform.position).magnitude + currentWaypoint * WAYPOINT_VALUE + currentLap * LAP_VALUE;
         }
+
         void ResetIfStuck()
         {
             if (IsStuck() && lastGroundCollided != null)
