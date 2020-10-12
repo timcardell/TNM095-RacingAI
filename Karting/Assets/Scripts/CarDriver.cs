@@ -394,6 +394,22 @@ namespace KartGame.KartSystems
             }
         }
 
+        public int GetCarPosition(CarDriver[] allCars)
+        {
+            float distance = GetDistance();
+            int position = 1;
+            foreach (CarDriver car in allCars)
+            {
+                if (car.GetDistance() > distance)
+                    position++;
+            }
+            return position;
+        }
+
+        public float GetDistance()
+        {
+            return (transform.position - lastWaypoint.position).magnitude + currentWaypoint * WAYPOINT_VALUE + currentLap * LAP_VALUE;
+        }
         void ResetIfStuck()
         {
             if (IsStuck() && lastGroundCollided != null)

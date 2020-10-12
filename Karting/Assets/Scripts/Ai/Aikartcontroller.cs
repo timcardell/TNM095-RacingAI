@@ -327,6 +327,10 @@ namespace KartGame.AI
            
         }
 
+    
+
+
+
         public override void OnEpisodeBegin()
         {
             switch (Mode)
