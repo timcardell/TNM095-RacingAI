@@ -12,8 +12,10 @@ namespace KartGame.KartSystems
             return new Vector2
             {
                 x = Input.GetAxis(Horizontal),
-                y = Input.GetAxis(Vertical)
-            };
+                y = Input.GetAxis(Vertical) 
+           };
         }
+   
     }
+    
 }

@@ -102,15 +102,29 @@ namespace KartGame.AI
         float[] localActions;
         int checkpointIndex;
         int lap;
-        public Text txt;
+        public Text txt, TimeText,LapTimeText;
+        public CanvasGroup LapGroup;
+
+        float fadeSpeed = 0.2f;
+
+        private float startTime;
+        private float ellapsedTime;
+
         void Awake()
         {
+            LapGroup.alpha = 0;
             lap = 0;
+            TimerStart();
             kart = GetComponent<CarDriver>();
             if (AgentSensorTransform == null)
             {
                 AgentSensorTransform = transform;
             }
+        }
+
+        void TimerStart()
+        {
+            startTime = Time.time;
         }
 
         void Start()
@@ -129,22 +143,32 @@ namespace KartGame.AI
 
         private void CheckOb()
         { 
-                    if (ShowRaycasts)
-                    {
-                        Debug.DrawRay(transform.position, Vector3.down * GroundCastDistance, Color.cyan);
-                    }
+             if (ShowRaycasts)
+             {
+                  Debug.DrawRay(transform.position, Vector3.down * GroundCastDistance, Color.cyan);
+             }
+
             // We want to place the agent back on the track if the agent happens to launch itself outside of the track.
-            if (Physics.Raycast(transform.position, Vector3.down, out var hit, GroundCastDistance, TrackMask)
-                      && ((1 << hit.collider.gameObject.layer) & OutOfBoundsMask) > 0)
-                    {
+            if (Physics.Raycast(transform.position, Vector3.down, out var hit, GroundCastDistance, TrackMask) && ((1 << hit.collider.gameObject.layer) & OutOfBoundsMask) > 0)
+            {
                 // Reset the agent back to its last known agent checkpoint
                 Transform checkpoint = Colliders[checkpointIndex].transform;
-                        transform.localRotation = checkpoint.rotation;
-                        transform.position = checkpoint.position;
-                        kart.Rigidbody.velocity = default;
-                        acceleration = steering = 0f;
-                    }
-    
+                transform.localRotation = checkpoint.rotation;
+                transform.position = checkpoint.position;
+                kart.Rigidbody.velocity = Vector3.zero;
+                kart.Rigidbody.angularVelocity = Vector3.zero;
+                acceleration = steering = 0f;
+            }
+            if (Vector3.Dot(transform.up, Vector3.down) > 0)
+            {
+                Transform checkpoint = Colliders[checkpointIndex].transform;
+                transform.localRotation = checkpoint.rotation;
+                transform.position = checkpoint.position;
+                kart.Rigidbody.velocity = Vector3.zero;
+                kart.Rigidbody.angularVelocity = Vector3.zero;
+                acceleration = steering = 0f;
+            }
+
         }
 
         private bool istriggered = false;
@@ -162,15 +186,28 @@ namespace KartGame.AI
                 istriggered = false;
                 AddReward(PassCheckpointReward);
                 checkpointIndex = index;
+         
             }
             if (triggered2 > 0 && istriggered == false)
             {
-               
+                LapTime();
                 lap++;
                 istriggered = true;
             }
             // do your things here that has to happen once
             
+        }
+
+        void LapTime()
+        {
+            LapGroup.alpha = 1;
+            string minutes = (Mathf.Floor(ellapsedTime / 60)).ToString("00");
+            string seconds = (ellapsedTime % 60).ToString("00");
+
+
+            LapTimeText.text = minutes + ":" + seconds;
+            TimerStart();
+ 
         }
 
         void FindCheckpointIndex(Collider checkPoint, out int index)
@@ -205,11 +242,18 @@ namespace KartGame.AI
             acceleration = Mathf.FloorToInt(actions[1]) == 1 ? 1 : -1;
         }
 
+      
         public override void CollectObservations(VectorSensor sensor)
         {
             sensor.AddObservation(kart.LocalSpeed());
             CheckOb();
-            SetLapText();
+            ellapsedTime = Time.time - startTime;
+            SetText();
+            if (LapGroup.alpha > 0)
+            {
+                LapGroup.alpha -= Time.deltaTime * fadeSpeed;
+            }
+
             // Add an observation for direction of the agent to the next checkpoint.
             var next = (checkpointIndex + 1) % Colliders.Length;
             var nextCollider = Colliders[next];
@@ -253,9 +297,16 @@ namespace KartGame.AI
             }
         }
 
-        void SetLapText()
+        void SetText()
         {
+
             txt.text = "lap:" + lap.ToString();
+
+            string minutes = (Mathf.Floor(ellapsedTime / 60)).ToString("00");
+            string seconds = (ellapsedTime % 60).ToString("00");
+           
+
+            TimeText.text = minutes + ":" + seconds;
         }
 
         public override void OnActionReceived(float[] vectorAction)
@@ -298,6 +349,7 @@ namespace KartGame.AI
         {
             localActions[0] = Input.GetAxis("Horizontal") +1 ;
             localActions[1] = Sign(Input.GetAxis("Vertical"));
+            
            
         }
 
@@ -306,4 +358,6 @@ namespace KartGame.AI
             return new Vector2(steering, acceleration);
         }
     }
+
+
 }

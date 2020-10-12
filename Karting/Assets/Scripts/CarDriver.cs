@@ -128,6 +128,8 @@ namespace KartGame.KartSystems
         GameObject lastGroundCollided = null;
         CarDriver.Stats finalStats;
         public Text txt;
+        bool drifting = false;
+        int driftingAngle;
         void Awake()
         {
             Rigidbody = GetComponent<Rigidbody>();
@@ -137,9 +139,8 @@ namespace KartGame.KartSystems
 
         void FixedUpdate()
         {
-             SetCountText ();
+            SetCountText ();
             ResetIfStuck();
-
             GatherInputs();
 
             // apply our powerups to create our finalStats
@@ -163,6 +164,7 @@ namespace KartGame.KartSystems
             {
                 MoveVehicle(accel, turn);
             }
+
             GroundAirbourne();
 
        
@@ -179,6 +181,7 @@ namespace KartGame.KartSystems
                 var inputSource = m_Inputs[i];
                 
                 Vector2 current = inputSource.GenerateInput();
+        
                 if (current.sqrMagnitude > 0)
                 {
                     Input = current;
@@ -297,7 +300,6 @@ namespace KartGame.KartSystems
 
             Vector3 movement = fwd * accelInput * finalAcceleration * GroundPercent;
 
-        
 
             // forward movement
             float currentSpeed = Rigidbody.velocity.magnitude;
