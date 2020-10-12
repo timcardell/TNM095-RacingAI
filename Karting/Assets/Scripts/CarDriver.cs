@@ -172,11 +172,11 @@ namespace KartGame.KartSystems
             }
             else if(Placement == 2)
             {
-                finalStats.TopSpeed = 55;
+                finalStats.TopSpeed = 60;
             }
             else if(Placement == 3)
             {
-                finalStats.TopSpeed = 60;
+                finalStats.TopSpeed = 70;
             }
 
             // apply vehicle physics
